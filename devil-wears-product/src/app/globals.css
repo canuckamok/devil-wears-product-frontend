@@ -1,0 +1,104 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  /* Backgrounds */
+  --color-cream: #F7F7EE;
+  --color-cream-dark: #EDEDE4;
+  --color-cream-light: #FBFBF6;
+
+  /* Text */
+  --color-charcoal: #1A1A1A;
+  --color-charcoal-light: #2D2D2D;
+  --color-warm-gray: #6B6B6B;
+  --color-muted: #9A9A9A;
+
+  /* Accent - Shocking Pink */
+  --color-pink: #FF2D6F;
+  --color-pink-hover: #E0255F;
+  --color-pink-light: #FFF0F5;
+  --color-pink-muted: rgba(255, 45, 111, 0.08);
+
+  /* Borders */
+  --color-border: #E5E5DC;
+  --color-border-dark: #D4D4CB;
+
+  /* Fonts */
+  --font-headline: "Satoshi", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/Satoshi-Variable.woff2") format("woff2");
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/Satoshi-VariableItalic.woff2") format("woff2");
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-charcoal);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-pink);
+  color: white;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-warm-gray);
+}
+
+/* Typography plugin customization for product descriptions */
+.prose {
+  --tw-prose-body: var(--color-charcoal-light);
+  --tw-prose-headings: var(--color-charcoal);
+  --tw-prose-links: var(--color-pink);
+  --tw-prose-bold: var(--color-charcoal);
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s ease;
+}
