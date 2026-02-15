@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { CartProvider } from "@/components/cart/cart-context";
 import { CartDrawer } from "@/components/cart/cart-drawer";
+import { getCollections } from "@/lib/fourthwall/collections";
 
 export const metadata: Metadata = {
   title: {
@@ -21,17 +22,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { results: collections } = await getCollections();
+
   return (
     <html lang="en">
       <body className="font-body antialiased min-h-screen flex flex-col">
         <CartProvider>
           <AnnouncementBar />
-          <Header />
+          <Header collections={collections} />
           <main className="flex-1">{children}</main>
           <Footer />
           <CartDrawer />

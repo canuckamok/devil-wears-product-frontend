@@ -4,29 +4,26 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { SATIRE } from "@/lib/constants";
+import type { FWCollection } from "@/lib/fourthwall/types";
 
-const COLLECTION_CARDS = [
-  {
-    name: "Tees",
-    slug: "tees",
-    emoji: "👕",
-    description: SATIRE.collections.tees,
-  },
-  {
-    name: "Sweaters",
-    slug: "sweaters",
-    emoji: "🧥",
-    description: SATIRE.collections.sweaters,
-  },
-  {
-    name: "Mugs",
-    slug: "mugs",
-    emoji: "☕",
-    description: SATIRE.collections.mugs,
-  },
-];
+const COLLECTION_EMOJIS: Record<string, string> = {
+  tees: "👕",
+  sweaters: "🧥",
+  mugs: "☕",
+  stickers: "🏷️",
+  hoodies: "🧥",
+  hats: "🧢",
+  bags: "👜",
+  posters: "🖼️",
+};
 
-export function CollectionsPreview() {
+const DEFAULT_EMOJI = "🛍️";
+
+interface CollectionsPreviewProps {
+  collections: FWCollection[];
+}
+
+export function CollectionsPreview({ collections }: CollectionsPreviewProps) {
   return (
     <section className="bg-cream-dark py-16 sm:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,7 +39,7 @@ export function CollectionsPreview() {
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {COLLECTION_CARDS.map((collection, index) => (
+          {collections.map((collection, index) => (
             <ScrollReveal key={collection.slug} delay={index * 0.1}>
               <Link
                 href={`/collections/${collection.slug}`}
@@ -53,12 +50,14 @@ export function CollectionsPreview() {
                   transition={{ duration: 0.2 }}
                   className="bg-white rounded-2xl p-8 border border-border hover:border-pink/30 transition-all duration-300 hover:shadow-lg hover:shadow-pink/5 h-full"
                 >
-                  <span className="text-4xl mb-4 block">{collection.emoji}</span>
+                  <span className="text-4xl mb-4 block">
+                    {COLLECTION_EMOJIS[collection.slug] ?? DEFAULT_EMOJI}
+                  </span>
                   <h3 className="font-headline font-bold text-xl text-charcoal mb-2 group-hover:text-pink transition-colors">
                     {collection.name}
                   </h3>
                   <p className="text-warm-gray text-sm leading-relaxed">
-                    {collection.description}
+                    {SATIRE.collections[collection.slug] ?? collection.description}
                   </p>
                   <div className="mt-6 flex items-center gap-1.5 text-pink text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                     Browse Collection

@@ -3,12 +3,19 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { NAV_LINKS, SITE } from "@/lib/constants";
+import type { FWCollection } from "@/lib/fourthwall/types";
 
 interface MobileNavProps {
   onClose: () => void;
+  collections: FWCollection[];
 }
 
-export function MobileNav({ onClose }: MobileNavProps) {
+export function MobileNav({ onClose, collections }: MobileNavProps) {
+  const navLinks = [
+    NAV_LINKS[0], // Shop All
+    ...collections.map((c) => ({ label: c.name, href: `/collections/${c.slug}` })),
+    NAV_LINKS[1], // About
+  ];
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -52,7 +59,7 @@ export function MobileNav({ onClose }: MobileNavProps) {
 
           {/* Nav links */}
           <nav className="flex flex-col gap-1">
-            {NAV_LINKS.map((link, index) => (
+            {navLinks.map((link, index) => (
               <motion.div
                 key={link.href}
                 initial={{ opacity: 0, x: -20 }}

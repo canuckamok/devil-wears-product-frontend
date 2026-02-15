@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import type { FWProduct } from "@/lib/fourthwall/types";
-import { formatPrice, getUniqueColors } from "@/lib/utils";
+import type { FWProduct, FWImage } from "@/lib/fourthwall/types";
+import { cn, formatPrice, getUniqueColors } from "@/lib/utils";
 
 interface ProductCardProps {
   product: FWProduct;
@@ -13,12 +13,26 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
+  const [hoveredColor, setHoveredColor] = useState<string | null>(null);
   const colors = getUniqueColors(product.variants);
-  const mainImage = product.images[0];
+  const defaultImage = product.images[0];
   const hoverImage = product.images[1];
   const price = product.variants[0]?.unitPrice;
   const compareAtPrice = product.variants[0]?.compareAtPrice;
+
+  // Get the first variant image matching a given color name
+  function getVariantImageForColor(colorName: string): FWImage | null {
+    const variant = product.variants.find(
+      (v) => v.attributes.color?.name === colorName,
+    );
+    return variant?.images?.[0] ?? null;
+  }
+
+  // When a swatch is hovered, show that variant's image; otherwise show default
+  const variantImage = hoveredColor
+    ? getVariantImageForColor(hoveredColor)
+    : null;
+  const displayImage = variantImage ?? defaultImage;
 
   return (
     <motion.div
@@ -29,22 +43,27 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       <Link
         href={`/products/${product.slug}`}
         className="group block"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         {/* Image */}
         <div className="relative aspect-square rounded-xl overflow-hidden bg-cream-dark mb-4">
-          {mainImage && (
+          {displayImage && (
             <Image
-              src={mainImage.url}
+              src={displayImage.url}
               alt={product.name}
-              width={mainImage.width}
-              height={mainImage.height}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              width={displayImage.width}
+              height={displayImage.height}
+              className={cn(
+                "w-full h-full object-cover transition-all duration-500",
+                !hoveredColor && hoverImage
+                  ? "group-hover:scale-105 group-hover:opacity-0"
+                  : !hoveredColor
+                    ? "group-hover:scale-105"
+                    : "",
+              )}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           )}
-          {hoverImage && (
+          {!hoveredColor && hoverImage && (
             <Image
               src={hoverImage.url}
               alt={product.name}
@@ -86,11 +105,20 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           {colors.length > 1 && (
             <div className="flex items-center gap-1.5 pt-1">
               {colors.slice(0, 6).map((color) => (
-                <span
+                <button
                   key={color.name}
-                  className="w-3.5 h-3.5 rounded-full border border-border-dark"
+                  type="button"
+                  className={cn(
+                    "w-3.5 h-3.5 rounded-full border transition-all duration-200",
+                    hoveredColor === color.name
+                      ? "scale-125 border-charcoal"
+                      : "border-border-dark",
+                  )}
                   style={{ backgroundColor: color.swatch }}
                   title={color.name}
+                  onMouseEnter={() => setHoveredColor(color.name)}
+                  onMouseLeave={() => setHoveredColor(null)}
+                  onClick={(e) => e.preventDefault()}
                 />
               ))}
               {colors.length > 6 && (
