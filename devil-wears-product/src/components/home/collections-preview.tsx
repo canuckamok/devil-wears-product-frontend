@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
-import { SATIRE } from "@/lib/constants";
+import { SATIRE, HIDDEN_COLLECTIONS, COLLECTION_ORDER } from "@/lib/constants";
 import type { FWCollection } from "@/lib/fourthwall/types";
 
 const COLLECTION_EMOJIS: Record<string, string> = {
+  "limited-release": "🔥",
   tees: "👕",
   sweaters: "🧥",
   mugs: "☕",
@@ -24,6 +25,17 @@ interface CollectionsPreviewProps {
 }
 
 export function CollectionsPreview({ collections }: CollectionsPreviewProps) {
+  const visibleCollections = collections
+    .filter((c) => !HIDDEN_COLLECTIONS.includes(c.slug))
+    .sort((a, b) => {
+      const ai = COLLECTION_ORDER.indexOf(a.slug);
+      const bi = COLLECTION_ORDER.indexOf(b.slug);
+      if (ai !== -1 && bi !== -1) return ai - bi;
+      if (ai !== -1) return -1;
+      if (bi !== -1) return 1;
+      return 0;
+    });
+
   return (
     <section className="bg-cream-dark py-16 sm:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,7 +51,7 @@ export function CollectionsPreview({ collections }: CollectionsPreviewProps) {
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {collections.map((collection, index) => (
+          {visibleCollections.map((collection, index) => (
             <ScrollReveal key={collection.slug} delay={index * 0.1}>
               <Link
                 href={`/collections/${collection.slug}`}

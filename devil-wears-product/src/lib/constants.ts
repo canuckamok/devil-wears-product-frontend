@@ -15,6 +15,12 @@ export const NAV_LINKS = [
   { label: "About", href: "/about" },
 ] as const;
 
+// Collections hidden from nav (redundant with Shop All or internal-only)
+export const HIDDEN_COLLECTIONS = ["all"];
+
+// Collections that should appear first in the nav (in this order)
+export const COLLECTION_ORDER = ["limited-release", "tees", "sweaters", "mugs", "other"];
+
 export const SATIRE = {
   cart: {
     title: "Sprint Backlog",
@@ -87,7 +93,7 @@ export const SATIRE = {
   homepage: {
     heroHeadline: "Devil Wears Product",
     heroSubheadline:
-      "Satirical merch for the quietly suffering product professional.",
+      "Merch for the quietly suffering product professional.",
     heroCta: "Browse the Roadmap",
     featuredTitle: "Shipped This Sprint",
     featuredSubtitle: "Somehow these made it past the design review.",
