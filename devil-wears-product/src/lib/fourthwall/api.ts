@@ -27,7 +27,7 @@ export async function fourthwallGet<T>(
 
   const res = await fetch(url.toString(), {
     next: {
-      revalidate: options?.revalidate ?? 60,
+      revalidate: options?.revalidate ?? 3600,
     },
   });
 

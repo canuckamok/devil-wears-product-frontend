@@ -20,40 +20,42 @@ export function getCheckoutUrl(cartId: string, currency: string = "USD"): string
 }
 
 export function getUniqueColors(
-  variants: { attributes: { color: { name: string; swatch: string } } }[],
+  variants: { attributes: { color: { name: string; swatch: string } | null } }[],
 ): { name: string; swatch: string }[] {
   const seen = new Set<string>();
   return variants.reduce<{ name: string; swatch: string }[]>((acc, variant) => {
-    if (!seen.has(variant.attributes.color.name)) {
-      seen.add(variant.attributes.color.name);
-      acc.push(variant.attributes.color);
+    const color = variant.attributes.color;
+    if (color && !seen.has(color.name)) {
+      seen.add(color.name);
+      acc.push(color);
     }
     return acc;
   }, []);
 }
 
 export function getUniqueSizes(
-  variants: { attributes: { size: { name: string }; color: { name: string } } }[],
+  variants: { attributes: { size: { name: string } | null; color: { name: string } | null } }[],
   selectedColor?: string,
 ): string[] {
   const filtered = selectedColor
-    ? variants.filter((v) => v.attributes.color.name === selectedColor)
+    ? variants.filter((v) => v.attributes.color?.name === selectedColor)
     : variants;
 
   const seen = new Set<string>();
   return filtered.reduce<string[]>((acc, variant) => {
-    if (!seen.has(variant.attributes.size.name)) {
-      seen.add(variant.attributes.size.name);
-      acc.push(variant.attributes.size.name);
+    const size = variant.attributes.size;
+    if (size && !seen.has(size.name)) {
+      seen.add(size.name);
+      acc.push(size.name);
     }
     return acc;
   }, []);
 }
 
 export function findVariant<
-  T extends { id: string; attributes: { color: { name: string }; size: { name: string } } },
+  T extends { id: string; attributes: { color: { name: string } | null; size: { name: string } | null } },
 >(variants: T[], color: string, size: string): T | undefined {
   return variants.find(
-    (v) => v.attributes.color.name === color && v.attributes.size.name === size,
+    (v) => v.attributes.color?.name === color && v.attributes.size?.name === size,
   );
 }

@@ -1,14 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { CartIcon } from "@/components/cart/cart-icon";
 import { MobileNav } from "./mobile-nav";
+import type { FWCollection } from "@/lib/fourthwall/types";
 
-export function Header() {
+interface HeaderProps {
+  collections: FWCollection[];
+}
+
+export function Header({ collections }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -17,6 +23,12 @@ export function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const navLinks = [
+    NAV_LINKS[0], // Shop All
+    ...collections.map((c) => ({ label: c.name, href: `/collections/${c.slug}` })),
+    NAV_LINKS[1], // About
+  ];
 
   return (
     <>
@@ -42,16 +54,20 @@ export function Header() {
             </button>
 
             {/* Logo */}
-            <Link
-              href="/"
-              className="font-headline font-bold text-xl sm:text-2xl tracking-tight text-charcoal hover:text-pink transition-colors"
-            >
-              {SITE.name}
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logo.svg"
+                alt={SITE.name}
+                width={280}
+                height={128}
+                className="h-10 w-auto sm:h-14"
+                priority
+              />
             </Link>
 
             {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-8">
-              {NAV_LINKS.map((link) => (
+              {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -70,7 +86,7 @@ export function Header() {
       </header>
 
       <AnimatePresence>
-        {mobileOpen && <MobileNav onClose={() => setMobileOpen(false)} />}
+        {mobileOpen && <MobileNav onClose={() => setMobileOpen(false)} collections={collections} />}
       </AnimatePresence>
     </>
   );

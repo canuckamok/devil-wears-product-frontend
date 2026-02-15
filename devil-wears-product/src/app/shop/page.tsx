@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getProducts } from "@/lib/fourthwall/products";
+import { getAllProducts } from "@/lib/fourthwall/products";
 import { ProductGrid } from "@/components/product/product-grid";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { SATIRE, SITE } from "@/lib/constants";
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  const { results: products } = await getProducts("all", 0, 50);
+  const products = await getAllProducts();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
