@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { NAV_LINKS, SITE } from "@/lib/constants";
+import { NAV_LINKS, SITE, HIDDEN_COLLECTIONS, COLLECTION_ORDER } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { CartIcon } from "@/components/cart/cart-icon";
 import { MobileNav } from "./mobile-nav";
@@ -24,9 +24,21 @@ export function Header({ collections }: HeaderProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const sortedCollections = collections
+    .filter((c) => !HIDDEN_COLLECTIONS.includes(c.slug))
+    .sort((a, b) => {
+      const ai = COLLECTION_ORDER.indexOf(a.slug);
+      const bi = COLLECTION_ORDER.indexOf(b.slug);
+      // Ordered collections first, then unordered ones keep their API order
+      if (ai !== -1 && bi !== -1) return ai - bi;
+      if (ai !== -1) return -1;
+      if (bi !== -1) return 1;
+      return 0;
+    });
+
   const navLinks = [
     NAV_LINKS[0], // Shop All
-    ...collections.map((c) => ({ label: c.name, href: `/collections/${c.slug}` })),
+    ...sortedCollections.map((c) => ({ label: c.name, href: `/collections/${c.slug}` })),
     NAV_LINKS[1], // About
   ];
 
