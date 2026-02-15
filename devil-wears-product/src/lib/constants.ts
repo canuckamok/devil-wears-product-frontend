@@ -65,10 +65,12 @@ export const SATIRE = {
   },
 
   collections: {
+    "limited-release": "Limited edition drops. Once they're gone, they're gone — just like your Q3 headcount.",
     tees: "Because nothing says 'I understand the customer' like wearing your dysfunction.",
     sweaters: "For when the office thermostat is as poorly managed as your sprint velocity.",
     mugs: "A vessel for your third coffee and your silent screams during standup.",
     stickers: "Stick them on your laptop. Let your coworkers know you've given up.",
+    other: "The stuff that didn't fit neatly into a category. Much like you on the org chart.",
     all: "Every artifact in our catalog of corporate despair. Browse freely — there's no sprint capacity limit here.",
   } as Record<string, string>,
 

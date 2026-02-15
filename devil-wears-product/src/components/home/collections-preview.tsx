@@ -16,6 +16,7 @@ const COLLECTION_EMOJIS: Record<string, string> = {
   hats: "🧢",
   bags: "👜",
   posters: "🖼️",
+  other: "📦",
 };
 
 const DEFAULT_EMOJI = "🛍️";
