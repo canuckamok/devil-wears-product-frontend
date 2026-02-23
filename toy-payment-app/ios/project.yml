@@ -1,0 +1,66 @@
+# XcodeGen project spec for ToyPayment iOS app
+# Install XcodeGen: brew install xcodegen
+# Generate project: cd toy-payment-app/ios && xcodegen generate
+
+name: ToyPayment
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "16.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+    ENABLE_STRICT_CONCURRENCY: complete
+    SWIFT_STRICT_CONCURRENCY: complete
+    CLANG_ENABLE_MODULES: YES
+    GCC_OPTIMIZATION_LEVEL: 0
+    SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+    PRODUCT_BUNDLE_IDENTIFIER: com.example.ToyPayment
+    DEVELOPMENT_TEAM: YOUR_TEAM_ID  # Replace with your Apple Developer Team ID
+    CODE_SIGN_STYLE: Automatic
+    ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  configs:
+    Release:
+      GCC_OPTIMIZATION_LEVEL: s
+      SWIFT_OPTIMIZATION_LEVEL: "-O"
+
+targets:
+  ToyPayment:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+
+    info:
+      path: ToyPayment/Info.plist
+      properties: {}  # Info.plist is managed manually
+
+    entitlements:
+      path: ToyPayment/ToyPayment.entitlements
+
+    sources:
+      - path: ToyPayment
+        excludes:
+          - "**/*.md"
+
+    resources:
+      - path: ToyPayment/Resources
+
+    settings:
+      base:
+        INFOPLIST_FILE: ToyPayment/Info.plist
+        PRODUCT_NAME: "Toy Store"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # Core ML model — add MobileNetV2.mlmodel and it auto-generates .mlmodelc
+        COREML_CODEGEN_LANGUAGE: Swift
+        COREML_CODEGEN_SWIFT_GLOBAL_MODULE: YES
+
+    dependencies:
+      # No third-party dependencies — uses only Apple frameworks
+      - framework: AVFoundation.framework
+      - framework: Vision.framework
+      - framework: CoreML.framework
+      - framework: CoreNFC.framework
+      - framework: AVFAudio.framework

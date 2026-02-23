@@ -1,0 +1,22 @@
+name = "toy-payment-proxy"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Secrets (set via `wrangler secret put <NAME>`):
+#   OPENAI_API_KEY     - OpenAI API key (for moderation + image generation)
+#   GOOGLE_AI_API_KEY  - Google AI API key (for Gemini 2.0 Flash vision)
+#   APP_TOKEN          - Static shared secret the iOS app sends in X-App-Token header
+
+[[kv_namespaces]]
+binding = "SPRITE_CACHE"
+id = "REPLACE_WITH_YOUR_SPRITE_CACHE_KV_ID"
+preview_id = "REPLACE_WITH_YOUR_SPRITE_CACHE_PREVIEW_KV_ID"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "REPLACE_WITH_YOUR_RATE_LIMIT_KV_ID"
+preview_id = "REPLACE_WITH_YOUR_RATE_LIMIT_KV_PREVIEW_KV_ID"
+
+[observability]
+enabled = true

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Privacy permissions (required by App Store) -->
+    <key>NSCameraUsageDescription</key>
+    <string>Used to scan items for your store</string>
+
+    <key>NFCReaderUsageDescription</key>
+    <string>Used to accept payment with your card</string>
+
+    <!-- NFC tag types entitlement is in ToyPayment.entitlements -->
+
+    <!-- App metadata -->
+    <key>CFBundleName</key>
+    <string>Toy Store</string>
+
+    <key>CFBundleDisplayName</key>
+    <string>Toy Store</string>
+
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+
+    <!-- Supported device orientations — portrait only for children's app -->
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+    </array>
+
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+    </array>
+
+    <!-- No status bar — immersive full-screen for young children -->
+    <key>UIStatusBarHidden</key>
+    <true/>
+
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <false/>
+
+    <!-- Require camera hardware -->
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+        <string>video-camera</string>
+        <string>auto-focus-camera</string>
+    </array>
+
+    <!-- App Transport Security — all calls go to HTTPS -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <false/>
+        <!-- Allow local development proxy -->
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>localhost</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <false/>
+            </dict>
+        </dict>
+    </dict>
+
+    <!-- No background modes — app doesn't need background execution -->
+
+    <!-- COPPA: no analytics, no advertising, no tracking -->
+    <key>SKAdNetworkItems</key>
+    <array/>
+</dict>
+</plist>
